@@ -1,6 +1,8 @@
 from menu import Menu
 from question import Question, DirectResponse
 
+from geoguessr import User
+
 
 class AccuracyQuestion(Question):
     def process_response(self, response, menu):
@@ -46,9 +48,15 @@ class MapQuestion(Question):
         return user.create_game(map=response)
 
 
+class UserQuestion(Question):
+    def process_response(self, response, menu):
+        return User(response)
+
+
 class ManualMenu(Menu):
     def __init__(self, parent):
         super().__init__(questions=[
+            UserQuestion("user", "Input the user token you want to use:"),
             MapQuestion("game", "Which map do you want to play?"),
             DirectResponse("results", ManualGameMenu)
         ], parent=parent)
